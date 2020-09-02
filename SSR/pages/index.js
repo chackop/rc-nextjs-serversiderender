@@ -41,9 +41,3 @@ const mapStateToProps = (state) => {
 export default wrapper.withRedux(
   connect(mapStateToProps, mapDispatchToProps)(Index)
 );
-
-// export default wrapper.withRedux(
-//   initStore,
-//   mapStateToProps,
-//   mapDispatchToProps
-// )(Index);

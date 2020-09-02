@@ -2,7 +2,7 @@ import { createStore, applyMiddleware } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import thunkMiddleware from 'redux-thunk';
 import data from './data/data.json';
-import { createWrapper } from 'next-redux-wrapper';
+import { createWrapper, HYDRATE } from 'next-redux-wrapper';
 
 // initial state
 const startState = {
@@ -27,6 +27,8 @@ export const addItem = (item) => {
 // reducers
 export const reducer = (state = initialState, action) => {
   switch (action.type) {
+    case HYDRATE:
+      return { ...state, ...action.payload };
     case 'INITIALCARDS':
       return {
         cards: action.cards,
