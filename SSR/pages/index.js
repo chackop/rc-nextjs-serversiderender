@@ -1,11 +1,13 @@
 import React from 'react';
+import { bindActionCreators } from 'redux';
+import { initStore, initialCards, addItem, wrapper } from '../store';
+import { connect } from 'react-redux';
 import './index.css';
 import Card from './Card';
-import data from '../data/data.json';
 
-export default class Index extends React.Component {
-  static async getInitialProps() {
-    return { cards: data };
+class Index extends React.Component {
+  static async getInitialProps({ store }) {
+    store.dispatch(initialCards());
   }
 
   render() {
@@ -15,11 +17,33 @@ export default class Index extends React.Component {
           <img src="/static/logo.png" className="static-logo" alt="logo" />
         </header>
         <div className="Grid">
-          {this.props.cards.map((card) => (
-            <Card key={card.id} />
-          ))}
+          {this.props.cards &&
+            this.props.cards.map((card) => <Card key={card.id} />)}
         </div>
       </div>
     );
   }
 }
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    initialCards: bindActionCreators(initialCards, dispatch),
+    addItem: bindActionCreators(addItem, dispatch),
+  };
+};
+
+const mapStateToProps = (state) => {
+  return {
+    cards: state.cards,
+  };
+};
+
+export default wrapper.withRedux(
+  connect(mapStateToProps, mapDispatchToProps)(Index)
+);
+
+// export default wrapper.withRedux(
+//   initStore,
+//   mapStateToProps,
+//   mapDispatchToProps
+// )(Index);
